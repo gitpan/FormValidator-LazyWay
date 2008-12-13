@@ -1,3 +1,5 @@
+=encoding utf-8
+
 =head1 NAME
 
 FormValidator::LazyWay::Result - 検証結果を保持するクラス

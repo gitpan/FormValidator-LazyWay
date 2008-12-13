@@ -22,10 +22,11 @@ sub true {
 }
 
 1;
+__END__
 
 =head1 NAME
 
-FormValidator::LazyWay::Rule::Object - オブジェクト
+FormValidator::LazyWay::Rule::Object - object
 
 =head1 METHOD
 

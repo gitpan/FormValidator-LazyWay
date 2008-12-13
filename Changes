@@ -1,5 +1,8 @@
 Revision history for Data-FormValidateEm
 
+0.02    2008-12-13T18:34:00+09:00
+        - added encoding for pod.
+
 0.01    2008-12-13T15:58:39+09:00
-        First version, released on an unsuspecting world.
+        - First version, released on an unsuspecting world.
 
