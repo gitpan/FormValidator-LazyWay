@@ -14,7 +14,7 @@ use Carp;
 use Data::Dumper;
 use Data::Visitor::Encode;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 __PACKAGE__->mk_accessors(qw/config unicode rule message fix filter/);
 
@@ -497,7 +497,7 @@ FormValidator::LazyWay - Yet Another Form Validator
 
 THIS MODULE IS UNDER DEVELOPMENT. SPECIFICATION MAY CHANGE.
 
-This validator's scope is not a form but an application. why?? I do not like a validator much which scope is a form becasue 
+This validator's scope is not a form but an application. why?? I do not like a validator much which scope is a form because 
 I have to write rule per form. that make me tired some. 
 
 There is one more cool aim for this validator. this validator does error message staff very well. This validator come with rule message  :-)

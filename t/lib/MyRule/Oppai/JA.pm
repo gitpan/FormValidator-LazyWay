@@ -1,6 +1,6 @@
 package MyRule::Oppai::JA;
 
-use stirct;
+use strict;
 
 sub name { 'おっぱい' }
 

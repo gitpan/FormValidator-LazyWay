@@ -1,5 +1,9 @@
 Revision history for Data-FormValidateEm
 
+0.03    2008-12-15T14:49:54+09:00
+        - edited depedencies module list at Makefile.PL.
+          be grateful for your test. thanks!
+
 0.02    2008-12-13T18:34:00+09:00
         - added encoding for pod.
 

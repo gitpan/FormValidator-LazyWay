@@ -67,19 +67,19 @@ L<FormValidator::LazyWay>で検証した結果を格納するクラスです。
 
 =head2 has_missing
 
-必須項目に指定されているフィールドにもかかわらず、取得できなかった場合に、trueを返します。
+必須項目に指定されているフィールドにもかかわらず、取得できなかった場合に、true を返します。
 
 =head2 has_custom_invalid
 
-カスタムエラーが会った場合、にtrueを返します。
+カスタムエラーが会った場合、に true を返します。
 
 =head2 has_invalid
 
-検証エラーが会った場合に、trueを返します。
+検証エラーが会った場合に、true を返します。
 
 =head2 has_error
 
-なんらかのエラーが会った場合に、trueを返します。
+なんらかのエラーが会った場合に、true を返します。
 
 =head1 SEE ALSO
 

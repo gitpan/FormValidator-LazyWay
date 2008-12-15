@@ -122,7 +122,7 @@ rulesで指定されているのは、使用する検証用モジュール名で
 =head2 検証フィールドの設定
 
 検証フィールドの設定をおこないます。そのフィールドが必須の場合は、required , 
-あってもなくても良い場合は、optionalに設定します。
+あってもなくても良い場合は、optional に設定します。
 
     my $cgi = new CGI() ;
 
@@ -148,7 +148,7 @@ rulesで指定されているのは、使用する検証用モジュール名で
  
     my $cgi = new CGI( { email => 'tomohiro.teranishi@gmail.com' , use_key => 'tomyhero' , message => 'うごきません' } ) ;
 
-$res->valid の中身がdumpされます。
+$res->valid の中身が dump されます。
 
     $VAR1 = {
         'email' => 'tomohiro.teranishi@gmail.com',
@@ -224,7 +224,7 @@ $res->error_message には以下のデータが格納されます。
 同じフィールド名で、違う検証モジュールを指定できるように、レベルという仕組みがあります。
 何も設定しなければ、strict という検証ルールが読み込まれます。
 
-例えばemailというフィールドがあった場合に、登録時のフォームではstrictレベルの検証ルールを、
+例えばemailというフィールドがあった場合に、登録時のフォームでは strict レベルの検証ルールを、
 検索時にはlooseレベルの検証ルールを使用したい場合など、そうした際に使用することになります。
 
  setting :
@@ -335,11 +335,11 @@ rule_messageで、大枠のレイアウト、 rule で、各検証モジュー�
 
 =head1 Profile
 
-check()メソッドの二つ目の引数に入るデータを、profileと呼びます。
+check()メソッドの二つ目の引数に入るデータを、profile と呼びます。
 
 =head2 required
 
-必須項目を指定します。ここで指定されたフィールド名が存在しない場合、missingエラーになります。
+必須項目を指定します。ここで指定されたフィールド名が存在しない場合、missing エラーになります。
 
  my $profile 
     = {

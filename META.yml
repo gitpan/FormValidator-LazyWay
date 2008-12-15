@@ -2,6 +2,10 @@
 abstract: 'Yet Another Form Validator '
 author:
   - 'Tomohiro Teranishi <tomohiro.teranishi@gmail.com>'
+build_requires:
+  Test::Base: 0
+  Test::Exception: 0
+  YAML::Syck: 0
 distribution_type: module
 generated_by: 'Module::Install version 0.77'
 license: unknown
@@ -14,13 +18,13 @@ no_index:
     - inc
     - t
 requires:
+  Class::Accessor::Fast: 0
   Data::Validate::URI: 0
+  Data::Visitor::Encode: 0
+  DateTime::Format::Strptime: 0
   Email::Valid: 0
   Email::Valid::Loose: 0
-  Moose: 0
   Perl6::Junction: 0
-  Test::Base: 0
-  Test::Exception: 0
   UNIVERSAL::require: 0
-  YAML::Syck: 0
-version: 0.02
+  URI: 0
+version: 0.03

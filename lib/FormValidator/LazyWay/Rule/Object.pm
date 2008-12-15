@@ -30,7 +30,7 @@ FormValidator::LazyWay::Rule::Object - object
 
 =head1 METHOD
 
-=head2 boolan
+=head2 boolean
 
 1 | 0
 
@@ -47,6 +47,6 @@ always true!
 
 =head1 AUTHOR
 
-Tomoiro Teranishi <tomohiro.teranishi@gmail.com>
+Tomohiro Teranishi <tomohiro.teranishi@gmail.com>
 
 =cut
