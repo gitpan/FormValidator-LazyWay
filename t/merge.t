@@ -1,12 +1,14 @@
-use Test::Base;
-use FormValidator::LazyWay;
 use FindBin;
 use File::Spec;
-use CGI;
-use YAML::Syck;
 use lib File::Spec->catfile( $FindBin::Bin, 'lib' );
+use utf8;
+
+use CGI;
 use Data::Dumper;
 use Encode;
+use FormValidator::LazyWay;
+use MyTestBase;
+use YAML::Syck;
 
 no warnings 'once';
 local $YAML::Syck::ImplicitUnicode = 1;

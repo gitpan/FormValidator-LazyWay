@@ -6,7 +6,7 @@ use warnings;
 sub range {
     my $num = shift;
     my $args = shift;
-  
+
     return 0 if $num > $args->{max};
     return 0 if $num < $args->{min};
 
@@ -15,7 +15,7 @@ sub range {
 sub int {
     my $num = shift;
     return 1 if $num eq '0';
-    return $num =~ /^\-?[1-9][0-9]*$/ ? 1 : 0 ;
+    return $num =~ /^-?[1-9][0-9]*$/ ? 1 : 0 ;
 }
 sub uint {
     my $num = shift;
@@ -26,7 +26,7 @@ sub uint {
 sub float {
     my $num = shift;
     return 1 if &int( $num );
-    return $num =~ /^\-?[1-9][0-9]*\.[0-9]*$/ ? 1 : 0 ;
+    return $num =~ /^-?[1-9][0-9]*\.[0-9]+$/ ? 1 : 0 ;
 }
 
 sub ufloat {

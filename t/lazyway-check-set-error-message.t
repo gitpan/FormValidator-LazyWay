@@ -1,9 +1,10 @@
-use Test::Base;
-use FormValidator::LazyWay;
 use FindBin;
 use File::Spec;
 use lib File::Spec->catfile( $FindBin::Bin, 'lib' );
 use utf8;
+
+use FormValidator::LazyWay;
+use MyTestBase;
 
 plan tests => 1 * blocks;
 
@@ -48,7 +49,7 @@ labels :
     email => [
         '1文字以上3文字以下',
         'メールアドレスの書式',
-        
+
     ],
 }
 --- lang chomp
@@ -56,5 +57,5 @@ ja
 --- result eval
 {
     email => 'Eメールには、1文字以上3文字以下,メールアドレスの書式が使用できます。',
-    hoge => 'ほげが空白です。',
+    hoge => 'ほげが空欄です。',
 }

@@ -1,5 +1,10 @@
-use Test::Base;
+use FindBin;
+use File::Spec;
+use lib File::Spec->catfile( $FindBin::Bin, 'lib' );
+# no use utf8 pragma. this test is for 'bytes'.
+
 use FormValidator::LazyWay::Rule::Japanese;
+use MyTestBase;
 
 plan tests => 1 * blocks;
 
@@ -14,14 +19,14 @@ __END__
 === ok
 --- value chomp
 あいうえお
---- args yaml
+--- args yaml_bytes
 bytes: 1
 --- result chomp
 1
 === space ok
 --- value chomp
 あいう　えお
---- args yaml
+--- args yaml_bytes
 bytes: 1
 allow:
   - '　'
@@ -30,7 +35,7 @@ allow:
 === KATAKANA-HIRAGANA PROLONGED SOUND MARK ok
 --- value chomp
 うっうー
---- args yaml
+--- args yaml_bytes
 bytes: 1
 allow:
   - ー
@@ -39,7 +44,7 @@ allow:
 === numbers not ok
 --- value chomp
 １２３４５６７８９０
---- args yaml
+--- args yaml_bytes
 bytes: 1
 allow:
 --- result chomp
@@ -47,14 +52,14 @@ allow:
 === katakana not ok
 --- value chomp
 アイウエオ
---- args yaml
+--- args yaml_bytes
 bytes: 1
 --- result chomp
 0
 === not ok
 --- value  chomp
 123 44567
---- args yaml
+--- args yaml_bytes
 bytes: 1
 --- result chomp
 0

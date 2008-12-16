@@ -48,7 +48,7 @@ __END__
 {}
 --- invalid eval
 {}
---- unknown eval 
+--- unknown eval
 []
 === wrong1
 --- param eval
@@ -61,7 +61,7 @@ __END__
 {}
 --- invalid eval
 {}
---- unknown eval 
+--- unknown eval
 []
 === wrong2
 --- param eval
@@ -73,7 +73,7 @@ __END__
 --- error_message eval
 {
     'email' => 'メールアドレスには、メールアドレスの書式が使用できます。',
-    'message' => 'お問い合わせ内容が空白です。'
+    'message' => 'お問い合わせ内容が空欄です。'
 }
 --- invalid eval
 {
@@ -81,5 +81,5 @@ __END__
         'Email#email' => 1
     }
 }
---- unknown eval 
+--- unknown eval
 []

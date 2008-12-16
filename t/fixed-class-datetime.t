@@ -50,10 +50,10 @@ setting :
         - String#length :
             min : 4
             max : 12
-        - String#ascii 
+        - String#ascii
     birthday:
       rule :
-        - Object#true 
+        - Object#true
       fix:
         - DateTime#format:
             pattern: '%Y-%m-%d %H:%M:%S'
@@ -62,7 +62,7 @@ setting :
         - String#length :
             min : 4
             max : 12
-        - String#ascii 
+        - String#ascii
 lang : ja
 labels :
     ja :
@@ -79,7 +79,7 @@ labels :
 {}
 --- invalid eval
 {}
---- unknown eval 
+--- unknown eval
 []
 --- fixed_class chomp
 DateTime
@@ -98,7 +98,7 @@ setting :
         - String#length :
             min : 4
             max : 12
-        - String#ascii 
+        - String#ascii
     birthday:
       rule :
         - Object#true
@@ -110,7 +110,7 @@ setting :
         - String#length :
             min : 4
             max : 12
-        - String#ascii 
+        - String#ascii
 lang : ja
 labels :
     ja :
@@ -127,7 +127,7 @@ labels :
 {}
 --- invalid eval
 {}
---- unknown eval 
+--- unknown eval
 []
 --- fixed_class chomp
 DateTime
@@ -147,7 +147,7 @@ setting :
         - String#length :
             min : 4
             max : 12
-        - String#ascii 
+        - String#ascii
     birthday:
       rule :
         - Object#true
@@ -159,7 +159,7 @@ setting :
         - String#length :
             min : 4
             max : 12
-        - String#ascii 
+        - String#ascii
 lang : ja
 labels :
     ja :
@@ -173,10 +173,10 @@ labels :
 --- missing eval
 ['birthday']
 --- error_message eval
-{ birthday => '誕生日が空白です。' }
+{ birthday => '誕生日が空欄です。' }
 --- invalid eval
 {}
---- unknown eval 
+--- unknown eval
 []
 --- fixed_class chomp
 

@@ -13,7 +13,11 @@ sub stash_test {
 }
 
 sub ascii {
-    '英数字とアンダーバー(_)',
+    '英数字と記号、空白',
+}
+
+sub nonsymbol_ascii {
+    '英数字のみ',
 }
 
 sub alphabet {
@@ -37,6 +41,8 @@ FormValidator::LazyWay::Rule::String::JA - Messages of String Rule
 =head2 string
 
 =head2 ascii
+
+=head2 nonsymbol_ascii
 
 =head2 alphabet
 

@@ -1,10 +1,11 @@
-use Test::Base;
-use FormValidator::LazyWay::Message;
-use FormValidator::LazyWay::Rule;
 use FindBin;
 use File::Spec;
 use lib File::Spec->catfile( $FindBin::Bin, 'lib' );
 use utf8;
+
+use FormValidator::LazyWay::Message;
+use FormValidator::LazyWay::Rule;
+use MyTestBase;
 
 plan tests => 1 * blocks;
 
@@ -41,7 +42,7 @@ lang  : ja
                 'invalid' => '__field__ supports __rule__ .'
               },
       'ja' => {
-                'missing' => '__field__が空白です。',
+                'missing' => '__field__が空欄です。',
                 'invalid' => '__field__には、__rule__が使用できます。'
               }
 }

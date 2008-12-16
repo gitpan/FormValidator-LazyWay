@@ -7,7 +7,7 @@ use utf8;
 sub boolean {
     my $bool = shift;
     return 0 unless defined $bool;
-    return $bool =~ /^(0|1)$/ ? 1 : 0 ;
+    return $bool =~ /^[01]$/ ? 1 : 0 ;
 }
 
 sub regexp {
@@ -36,7 +36,7 @@ FormValidator::LazyWay::Rule::Object - object
 
 =head2 regexp
 
-regular expression 
+regular expression
 
  Object#regep
     format : ^\d+$

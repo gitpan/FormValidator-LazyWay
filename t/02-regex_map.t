@@ -57,7 +57,7 @@ __END__
 {}
 --- invalid eval
 {}
---- unknown eval 
+--- unknown eval
 []
 === missing error
 --- has_missing chomp
@@ -76,11 +76,11 @@ __END__
 [qw/category_id/]
 --- error_message eval
 {
-    category_id => 'カテゴリーIDが空白です。',
+    category_id => 'カテゴリーIDが空欄です。',
 }
 --- invalid eval
 { }
---- unknown eval 
+--- unknown eval
 []
 === invald error
 --- has_missing chomp
@@ -107,5 +107,5 @@ __END__
         'Number#uint' => 1,
     }
 }
---- unknown eval 
+--- unknown eval
 ['hoge_id']

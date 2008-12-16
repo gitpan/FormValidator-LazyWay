@@ -9,7 +9,7 @@ sub invalid {
 }
 
 sub missing {
-    return '__field__が空白です。';
+    return '__field__が空欄です。';
 }
 
 1;

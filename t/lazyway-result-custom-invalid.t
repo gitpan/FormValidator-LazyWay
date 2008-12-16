@@ -1,10 +1,11 @@
-use Test::Base;
-use FormValidator::LazyWay;
 use FindBin;
 use File::Spec;
 use lib File::Spec->catfile( $FindBin::Bin, 'lib' );
-use CGI;
 use utf8;
+
+use CGI;
+use FormValidator::LazyWay;
+use MyTestBase;
 
 plan tests => 3 * blocks;
 
@@ -34,13 +35,13 @@ setting:
         - String#length:
             min: 4
             max: 12
-        - String#ascii 
+        - String#ascii
     password:
       rule:
         - String#length:
             min: 4
             max: 12
-        - String#ascii 
+        - String#ascii
 lang: ja
 labels:
   ja:
@@ -73,13 +74,13 @@ setting:
         - String#length:
             min: 4
             max: 12
-        - String#ascii 
+        - String#ascii
     password:
       rule:
         - String#length:
             min: 4
             max: 12
-        - String#ascii 
+        - String#ascii
 lang: ja
 labels:
   ja:
@@ -98,6 +99,6 @@ login
 ログインに失敗しました。
 --- error_message yaml
 login: ログインに失敗しました。
-username: ユーザネームには、英数字とアンダーバー(_)が使用できます。
+username: ユーザネームには、英数字と記号、空白が使用できます。
 --- has_error chomp
 1

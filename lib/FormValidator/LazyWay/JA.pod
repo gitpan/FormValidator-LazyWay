@@ -46,7 +46,7 @@ FormValidator::LazyWay - フォーム検証用モジュール
         print Dumper $res->error_message;
         # output  
         #$VAR1 = {
-        #  'email' => 'メールアドレスが空白です。',
+        #  'email' => 'メールアドレスが空です。',
         #  'password' => 'パスワードには4文字以上12文字以下が使用できます。'
         #};
     }
@@ -163,7 +163,7 @@ $res->valid の中身が dump されます。
 $res->error_message には以下のデータが格納されます。
 
     $VAR1 = {
-        'email' => 'メールアドレスが空白です。'
+        'email' => 'メールアドレスが空です。'
     };
 
 =item フォーマットが間違ってる場合
@@ -357,7 +357,7 @@ check()メソッドの二つ目の引数に入るデータを、profile と呼�
 
 =head2 defaults
 
-フィールド名が空白だった場合、デフォルト値を設定いたします。requiredのチェックより先に、
+フィールド名が空欄だった場合、デフォルト値を設定いたします。requiredのチェックより先に、
 デフォルト値を設定しますので、defaultsを設定した場合、入力がなくても、必須条件を満たすことができます。
 
  my $profile 

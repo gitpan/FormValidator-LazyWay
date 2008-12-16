@@ -12,7 +12,11 @@ sub string {
 }
 
 sub ascii {
-    'alphabet, number , underber ',
+    'alphabet, number, simbol ',
+}
+
+sub nonsymbol_ascii {
+    'alphabet, number',
 }
 
 sub alphabet {
@@ -36,6 +40,8 @@ FormValidator::LazyWay::Rule::String::EN - Messages of String Rule
 =head2 string
 
 =head2 ascii
+
+=head2 nonsymbol_ascii
 
 =head2 alphabet
 

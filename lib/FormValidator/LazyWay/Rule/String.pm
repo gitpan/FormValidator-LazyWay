@@ -29,7 +29,19 @@ sub stash_test {
 
 sub ascii {
     my $text = shift;
-    return $text =~ /^[\x21-\x7E]+$/ ? 1 : 0;
+    return $text =~ /^[\x20-\x7E]+$/ ? 1 : 0;
+}
+
+sub nonsymbol_ascii {
+    my ($text, $args) = @_;
+
+    if ( ref $args->{allow} eq 'ARRAY' ) {
+        foreach my $allow ( @{$args->{allow}} ) {
+            $text =~ s{$allow}{}xmsg;
+        }
+    }
+
+    return $text =~ /^[a-zA-Z0-9]+$/ ? 1 : 0;
 }
 
 sub alphabet {
@@ -55,6 +67,20 @@ FormValidator::LazyWay::Rule::String - String Rule
 =head2 stash_test
 
 =head2 ascii
+
+=head2 nonsymbol_ascii
+
+only alphabets and numbers.
+
+you add $args->{allow} if you accept symbols.
+
+  username:
+    rule:
+      - String#nonsimbol_ascii:
+          args:
+            allow:
+              - '_'
+              - '-'
 
 =head2 alphabet
 

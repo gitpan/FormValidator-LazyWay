@@ -21,7 +21,7 @@ sub new {
     }
 
     croak 'you must set config' unless exists $args->{config};
-    
+
     my $self = bless $args, $class;
 
     unless ( $self->init() ) {
@@ -122,7 +122,7 @@ sub _make_setting {
             }
             else {
                 if ( $package =~ m/^\+/ ) {
-                    $package =~ s/\+//g;
+                    $package =~ s/\++//g;
                 }
                 else {
                     $package = $self->self . '::' . $package;

@@ -1,6 +1,10 @@
-use Test::Base;
-use FormValidator::LazyWay::Rule::Japanese;
+use FindBin;
+use File::Spec;
+use lib File::Spec->catfile( $FindBin::Bin, 'lib' );
 use utf8;
+
+use FormValidator::LazyWay::Rule::Japanese;
+use MyTestBase;
 
 plan tests => 1 * blocks;
 
@@ -15,13 +19,15 @@ __END__
 === ok
 --- value chomp
 アイウエオ
---- args yaml
+--- args eval
+{}
 --- result chomp
 1
 === ok
 --- value chomp
 ヴ
---- args yaml
+--- args eval
+{}
 --- result chomp
 1
 === space ok
@@ -50,19 +56,22 @@ allow:
 === katakana not ok
 --- value chomp
 あいうえお
---- args yaml
+--- args eval
+{}
 --- result chomp
 0
 === katakana not ok
 --- value chomp
 寺西
---- args yaml
+--- args eval
+{}
 --- result chomp
 0
 === not ok
 --- value  chomp
 123 44567
---- args yaml
+--- args eval
+{}
 --- result chomp
 0
 

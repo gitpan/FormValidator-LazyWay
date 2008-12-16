@@ -1,13 +1,15 @@
-use Test::Base;
-use FormValidator::LazyWay;
 use FindBin;
 use File::Spec;
-use CGI;
-use YAML::Syck;
 use lib File::Spec->catfile( $FindBin::Bin, 'lib' );
+# no use utf8 pragma. this test is for 'bytes'.
+
+use CGI;
 use Data::Dumper;
-use Encode;
 use Data::Visitor::Encode;
+use Encode;
+use FormValidator::LazyWay;
+use MyTestBase;
+use YAML::Syck;
 
 plan tests => 1 * blocks;
 
@@ -28,7 +30,7 @@ run {
 
 __END__
 === sccess1
---- config yaml
+--- config yaml_bytes
 rules:
   - Object
 setting:
@@ -65,7 +67,7 @@ labels:
 }
 
 === config sccess2
---- config yaml
+--- config yaml_bytes
 unicode: 1
 rules:
   - Object

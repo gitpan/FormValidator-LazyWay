@@ -46,7 +46,7 @@ __END__
 {}
 --- invalid eval
 {}
---- unknown eval 
+--- unknown eval
 []
 === wrong1
 --- param eval
@@ -57,16 +57,16 @@ __END__
 [qw/password/]
 --- error_message eval
 {
-    password => 'パスワードが空白です。',
-    email => 'メールアドレスには、メールアドレスの書式が使用できます。', 
+    password => 'パスワードが空欄です。',
+    email => 'メールアドレスには、メールアドレスの書式が使用できます。',
 }
 --- invalid eval
-{ 
+{
     'email' => {
         'Email#email' => 1,
     },
 }
---- unknown eval 
+--- unknown eval
 ['hoge']
 === wrong2
 --- param eval
@@ -79,7 +79,7 @@ __END__
 []
 --- error_message eval
 {
-    password => 'パスワードには、4文字以上12文字以下,英数字とアンダーバー(_)が使用できます。',
+    password => 'パスワードには、4文字以上12文字以下,英数字と記号、空白が使用できます。',
 }
 --- invalid eval
 {
@@ -88,5 +88,5 @@ __END__
         'String#ascii' => 1,
     }
 }
---- unknown eval 
+--- unknown eval
 []

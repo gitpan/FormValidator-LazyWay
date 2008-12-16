@@ -14,7 +14,7 @@ use Carp;
 use Data::Dumper;
 use Data::Visitor::Encode;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 __PACKAGE__->mk_accessors(qw/config unicode rule message fix filter/);
 
@@ -56,8 +56,8 @@ sub new {
 }
 
 sub label {
-    my $self    = shift;
-    my $lang    = $self->message->lang;
+    my $self = shift;
+    my $lang = $self->message->lang;
     return $self->message->labels->{ $lang } ;
 }
 
@@ -90,7 +90,7 @@ sub check {
         # デフォルトセット
         '_set_default',
 
-        # 空白のフィールドのキーを消去
+        # 空のフィールドのキーを消去
         '_remove_empty_fields',
 
         # マージが設定された項目を storage にセット
@@ -120,7 +120,7 @@ sub check {
     $storage->{has_missing} = scalar @{$storage->{missing}} ? 1 : 0 ;
     $storage->{has_invalid} = scalar keys %{$storage->{invalid}} ? 1 : 0 ;
     $storage->{has_error}   = ( $storage->{has_missing} || $storage->{has_invalid} ) ? 1 : 0 ;
-    $storage->{success}   = ( $storage->{has_missing} || $storage->{has_invalid} ) ? 0 : 1 ;
+    $storage->{success}     = ( $storage->{has_missing} || $storage->{has_invalid} ) ? 0 : 1 ;
 
     return FormValidator::LazyWay::Result->new($storage);
 }
@@ -137,7 +137,7 @@ sub _set_error_message_for_display {
         local $" = ',';
         my $tmp = "@{$error_messages->{$field}}";
         my $label = $self->message->labels->{ $lang }{ $field } || $field;
-        my $mes = $self->message->base_message->{ $lang }{invalid} ; 
+        my $mes = $self->message->base_message->{ $lang }{invalid} ;
         $mes =~ s/__rule__/$tmp/g;
         $mes =~ s/__field__/$label/g;
 
@@ -148,7 +148,7 @@ sub _set_error_message_for_display {
     if ( scalar @{ $storage->{missing} } ) {
         for my $field ( @{ $storage->{missing} } ) {
             my $label = $self->message->labels->{ $lang }{ $field } || $field;
-            my $mes = $self->message->base_message->{ $lang }{missing} ; 
+            my $mes = $self->message->base_message->{ $lang }{missing} ;
             $mes =~ s/__field__/$label/g;
             $result->{$field} = $mes;
         }
@@ -203,9 +203,9 @@ sub _merge {
 }
 
 sub _filter {
-    my $self           = shift;
-    my $storage        = shift;
-    my $profile        = shift;
+    my $self    = shift;
+    my $storage = shift;
+    my $profile = shift;
 
     my @fields = keys %{ $storage->{valid} } ;
 
@@ -216,9 +216,9 @@ sub _filter {
 }
 
 sub _fixed {
-    my $self           = shift;
-    my $storage        = shift;
-    my $profile        = shift;
+    my $self    = shift;
+    my $storage = shift;
+    my $profile = shift;
 
     my @fields = keys %{ $storage->{valid} } ;
 
@@ -315,8 +315,8 @@ sub _get_validator_methods {
         {
             if ( $field =~ qr/$regexp/ ) {
                 $validators = $self->rule->setting->{regex_map}{$regexp};
-                $$level      = 'regex_map';
-                $$regex      = $regexp;
+                $$level     = 'regex_map';
+                $$regex     = $regexp;
                 last;
             }
         }
@@ -337,12 +337,12 @@ sub _set_dependencies {
 
     foreach my $field ( keys %{ $profile->{dependencies} } ) {
         if ( $storage->{valid}{$field} ) {
-            for my $dependency  ( @{ $profile->{dependencies}{$field} } ) { 
+            for my $dependency ( @{ $profile->{dependencies}{$field} } ) {
                 $profile->{required}{$dependency} = 1;
             }
         }
     }
-    
+
     return 1;
 }
 sub _set_dependency_groups {
@@ -360,7 +360,7 @@ sub _set_dependency_groups {
             $require_all = 1 if $storage->{valid}{$field};
        }
        if ($require_all) {
-            map { $profile->{required}{$_} = 1 }  FormValidator::LazyWay::Utils::arrayify($group); 
+            map { $profile->{required}{$_} = 1 } FormValidator::LazyWay::Utils::arrayify($group);
        }
     }
 
@@ -475,14 +475,14 @@ __END__
 
 =head1 NAME
 
-FormValidator::LazyWay - Yet Another Form Validator 
+FormValidator::LazyWay - Yet Another Form Validator
 
 =head1 SYNOPSIS
 
   my $fv = FormValidator::LazyWay->new( $config );
   my $cgi = new CGI;
-  my $res 
-    = $fv->check( $cgi , { 
+  my $res
+    = $fv->check( $cgi , {
         required => [qw/email password/], });
 
   if ( $res->has_error ) {
@@ -497,12 +497,12 @@ FormValidator::LazyWay - Yet Another Form Validator
 
 THIS MODULE IS UNDER DEVELOPMENT. SPECIFICATION MAY CHANGE.
 
-This validator's scope is not a form but an application. why?? I do not like a validator much which scope is a form because 
-I have to write rule per form. that make me tired some. 
+This validator's scope is not a form but an application. why?? I do not like a validator much which scope is a form because
+I have to write rule per form. that make me tired some.
 
-There is one more cool aim for this validator. this validator does error message staff very well. This validator come with rule message  :-)
+There is one more cool aim for this validator. this validator does error message staff very well. This validator come with rule message :-)
 
-well I am not good at explain all about detail in English , so I will write some code to explain one by one.
+well I am not good at explain all about details in English , so I will write some code to explain one by one.
 
 
 =head1 AUTHOR

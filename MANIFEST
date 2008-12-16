@@ -68,6 +68,7 @@ t/lazyway-new.t
 t/lazyway-result-custom-invalid.t
 t/lib/MyRule/Oppai.pm
 t/lib/MyRule/Oppai/JA.pm
+t/lib/MyTestBase.pm
 t/merge.t
 t/message-get-label.t
 t/message-set-lang.t
@@ -92,6 +93,7 @@ t/rule-object-true.t
 t/rule-string-alphabet.t
 t/rule-string-ascii.t
 t/rule-string-length.t
+t/rule-string-nonsymbol_ascii.t
 t/rule-string-number.t
 t/rule.t
 t/setting-unicode.t

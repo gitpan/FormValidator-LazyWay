@@ -1,10 +1,11 @@
-use Test::Base;
-use FormValidator::LazyWay;
 use FindBin;
 use File::Spec;
 use lib File::Spec->catfile( $FindBin::Bin, 'lib' );
-use Data::Dumper;
 use utf8;
+
+use Data::Dumper;
+use FormValidator::LazyWay;
+use MyTestBase;
 
 plan tests => 1 * blocks;
 
