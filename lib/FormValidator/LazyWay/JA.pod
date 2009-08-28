@@ -67,7 +67,6 @@ FormValidator::LazyWay - フォーム検証用モジュール
 また、検証用モジュールごとに、検証内容を設定することができます。その情報を元に、エラーメッセージを作成するので、
 エラーメッセージを考える手間も短縮できるようになっています。
 
-
 =head1 QUICK START
 
 簡単な問い合わせフォームを例を基に、使い方の説明をいたします。
@@ -275,8 +274,7 @@ $res->error_message には以下のデータが格納されます。
   strict:
     date:
       rule:
-        - Object#regexp:
-            format: ^\d{4}-\d{2}-\d{2}
+        - DateTime#date
 
 このようにセットすることにより、year, month, day を format に従って入
 力内容をマージして date と言う項目を作ります。
@@ -289,8 +287,7 @@ $res->error_message には以下のデータが格納されます。
 
 =item 設定名
 
-現在 rule という設定名があり、この配下には、検証用モジュールの設定を書くことができます。
-filter , merge , fix という設定名の追加を今後に予定しています。
+現在 rule, filter, fix という設定名があり、この配下には各々のモジュールの設定を書くことができます。
 
 =over
 
@@ -303,10 +300,41 @@ filter , merge , fix という設定名の追加を今後に予定していま�
     - String#length :
         min : 4
         max : 12
-    - String#ascii 
+    - String#ascii
     - +OreOre#rule
 
-=back 
+=item filter
+
+検証用モジュールにかける前に入力された内容を変化させることができる設定です。
+以下の例では utf8 で入力された内容を decode して String#length にかかります。
+String#length は入力された内容の長さを検証しますが、この場合だと日本語でも1文字を1文字として検証されます。
+（LazyWay 内部は flagged utf-8 で保たれるような設計になっています。
+　入力内容が flagged utf-8 であればこのフィルタは不要です。）
+
+  name :
+    rule :
+      - String#length:
+          min : 4
+          max : 12
+    filter :
+      - Encode#decode:
+          encoding: utf8
+
+=item fix
+
+検証が完了した後に入力された内容をオブジェクトなどに変化させます。
+以下の例では DateTime#date の検証を経て、入力された内容を DateTime オブジェクトにします。
+L<FormValidator::LazyWay::Result>オブジェクトの valid メソッドで取り出すときにはオブジェクトになっているはずです。
+（fix という名前は妥当？）
+
+  date:
+    rule:
+      - DateTime#date
+    fix:
+      - DateTime#format:
+          - '%Y-%m-%d'
+
+=back
 
 =back 
 

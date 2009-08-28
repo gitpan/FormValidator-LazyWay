@@ -83,3 +83,31 @@ __END__
 }
 --- unknown eval
 []
+=== wrong3
+--- param eval
+{   email => 'email',
+    message => 'wahaha',
+    user_key => 'ほげらららららら'
+}
+--- valid eval
+{
+    message => 'wahaha',
+}
+--- missing eval
+[]
+--- error_message eval
+{
+    'email' => 'メールアドレスには、メールアドレスの書式が使用できます。',
+    'user_key' => 'ユーザIDには、英数字と記号、空白が使用できます。',
+}
+--- invalid eval
+{
+    'email' => {
+        'Email#email' => 1
+    },
+    'user_key' => {
+        'String#ascii' => 1,
+    }
+}
+--- unknown eval
+[]

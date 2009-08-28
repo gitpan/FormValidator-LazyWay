@@ -14,7 +14,7 @@ use Carp;
 use Data::Dumper;
 use Data::Visitor::Encode;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 __PACKAGE__->mk_accessors(qw/config unicode rule message fix filter/);
 
@@ -194,7 +194,7 @@ sub _merge {
     for my $key ( keys %{$self->config->{setting}->{merge}} ) {
         my $field = $self->config->{setting}->{merge}->{$key};
         if ( ref $field eq 'HASH'
-                 && $field->{fields}
+                 && $field->{format}
                      && $field->{fields} ) {
             my @values = map { $storage->{valid}->{$_} } @{ $field->{fields} };
             $storage->{valid}->{$key} = sprintf($field->{format}, @values);

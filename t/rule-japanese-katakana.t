@@ -74,4 +74,12 @@ allow:
 {}
 --- result chomp
 0
+=== regex space ok
+--- value chomp
+アイウ　エオ
+--- args yaml
+allow:
+  - '\s+'
+--- result chomp
+1
 

@@ -13,6 +13,7 @@ inc/Module/Install/WriteAll.pm
 lib/FormValidator/LazyWay.pm
 lib/FormValidator/LazyWay/Filter.pm
 lib/FormValidator/LazyWay/Filter/Encode.pm
+lib/FormValidator/LazyWay/Filter/Unify.pm
 lib/FormValidator/LazyWay/Fix.pm
 lib/FormValidator/LazyWay/Fix/DateTime.pm
 lib/FormValidator/LazyWay/Fix/URI.pm
@@ -23,6 +24,9 @@ lib/FormValidator/LazyWay/Message/JA.pm
 lib/FormValidator/LazyWay/Result.pm
 lib/FormValidator/LazyWay/Result/JA.pod
 lib/FormValidator/LazyWay/Rule.pm
+lib/FormValidator/LazyWay/Rule/DateTime.pm
+lib/FormValidator/LazyWay/Rule/DateTime/EN.pm
+lib/FormValidator/LazyWay/Rule/DateTime/JA.pm
 lib/FormValidator/LazyWay/Rule/Email.pm
 lib/FormValidator/LazyWay/Rule/Email/EN.pm
 lib/FormValidator/LazyWay/Rule/Email/JA.pm
@@ -52,6 +56,7 @@ t/conf/inquery-sample.yml
 t/conf/login-sample.yml
 t/conf/regex_map.yml
 t/filter-encode.t
+t/filter-unify.t
 t/filter.t
 t/fix.t
 t/fixed-class-datetime.t
@@ -74,6 +79,9 @@ t/message-get-label.t
 t/message-set-lang.t
 t/message.t
 t/message_fail.t
+t/rule-datetime-date.t
+t/rule-datetime-datetime.t
+t/rule-datetime-time.t
 t/rule-japanese-hiragana-bytes.t
 t/rule-japanese-hiragana.t
 t/rule-japanese-katakana-bytes.t

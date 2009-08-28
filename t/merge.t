@@ -35,7 +35,7 @@ __END__
 === ok
 --- yaml
 rules:
-  - Object
+  - DateTime
 setting:
   merge:
     date:
@@ -47,8 +47,7 @@ setting:
   strict:
     date:
       rule:
-        - Object#regexp:
-            format: ^\d{4}-\d{2}-\d{2}$
+        - DateTime#date
 lang: ja
 labels:
   ja:

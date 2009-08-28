@@ -1,5 +1,10 @@
 Revision history for FormValidator-LazyWay
 
+0.06    2009-08-29T01:24:28+09:00
+        - added rule DateTime.
+        - added filter Unify
+        - added Document.
+
 0.05    2008-12-18T18:19:49+09:00
         - eliminate dependence to YAML.
 
