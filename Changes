@@ -1,5 +1,9 @@
 Revision history for FormValidator-LazyWay
 
+0.07    2009-09-12T17:13:56+09:00
+        - added lang files.
+        - fixed filter action for regex_map (thanks Kazuma Shiraiwa)
+
 0.06    2009-08-29T01:24:28+09:00
         - added rule DateTime.
         - added filter Unify

@@ -252,13 +252,13 @@ $res->error_message には以下のデータが格納されます。
     regexp_map :
         '_id$' :
             rule :
-                - Number#integer
+                - Number#int
     strict :
         foo_id :
             rule :
                 - Email#email
         
-このようにセットすることにより、_idで終わるすべてのフィールドは、Number#integerの検証ルールが適応されます。
+このようにセットすることにより、_idで終わるすべてのフィールドは、Number#intの検証ルールが適応されます。
 ただし、他のレベルの設定の方が強い仕様になっており、strict で foo_idを設定した場合、そちら側を優先的に反映させます。
 
 二つめは merge というスペシャルレベルです。

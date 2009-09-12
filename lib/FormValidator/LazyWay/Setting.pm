@@ -41,8 +41,19 @@ sub parse {
     my $level = shift;
     my $field = shift;
 
-    for my $item ( @{$self->{setting}{$level}{$field}} ) {
-        $value = $item->{method}->( $value , $item->{args} );
+    if (exists $self->{setting}{$level}{$field}) {
+        for my $item ( @{$self->{setting}{$level}{$field}} ) {
+            $value = $item->{method}->( $value , $item->{args} );
+        }
+    }
+    else {
+        for my $regexp ( keys %{ $self->{setting}{regex_map} } ) {
+            if ( $field =~ qr/$regexp/ ) {
+                for my $validator ( @{$self->{setting}{regex_map}{$regexp}} ) {
+                    $value = $validator->{method}->( $value, $validator->{args} );
+                }
+            }
+        }
     }
 
     return $value;

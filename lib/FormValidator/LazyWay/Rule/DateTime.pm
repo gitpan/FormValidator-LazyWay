@@ -13,7 +13,7 @@ sub datetime {
     }
 
     my $strp = DateTime::Format::Strptime->new( %{$args}  );
-    my $dt = $strp->parse_datetime($datetime);
+    my $dt = eval { $strp->parse_datetime($datetime) };
     return $dt ? 1 : 0;
 }
 
@@ -24,7 +24,7 @@ sub date {
     }
     
     my $strp = DateTime::Format::Strptime->new( %{$args}  );
-    my $dt = $strp->parse_datetime($date);
+    my $dt = eval { $strp->parse_datetime($date) };
     return $dt ? 1 : 0;
 }
 
@@ -35,7 +35,7 @@ sub time {
     }
 
     my $strp = DateTime::Format::Strptime->new( %{$args}  );
-    my $dt = $strp->parse_datetime($time);
+    my $dt = eval { $strp->parse_datetime($time) };
     return $dt ? 1 : 0;
 }
 

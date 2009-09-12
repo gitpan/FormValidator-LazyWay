@@ -31,8 +31,10 @@ lib/FormValidator/LazyWay/Rule/Email.pm
 lib/FormValidator/LazyWay/Rule/Email/EN.pm
 lib/FormValidator/LazyWay/Rule/Email/JA.pm
 lib/FormValidator/LazyWay/Rule/Japanese.pm
+lib/FormValidator/LazyWay/Rule/Japanese/EN.pm
 lib/FormValidator/LazyWay/Rule/Japanese/JA.pm
 lib/FormValidator/LazyWay/Rule/Net.pm
+lib/FormValidator/LazyWay/Rule/Net/EN.pm
 lib/FormValidator/LazyWay/Rule/Net/JA.pm
 lib/FormValidator/LazyWay/Rule/Number.pm
 lib/FormValidator/LazyWay/Rule/Number/EN.pm
@@ -55,6 +57,7 @@ t/03-inquery.t
 t/conf/inquery-sample.yml
 t/conf/login-sample.yml
 t/conf/regex_map.yml
+t/filter-at-regexp.t
 t/filter-encode.t
 t/filter-unify.t
 t/filter.t
