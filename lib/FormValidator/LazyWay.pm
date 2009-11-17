@@ -14,7 +14,7 @@ use Carp;
 use Data::Dumper;
 use Data::Visitor::Encode;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 __PACKAGE__->mk_accessors(qw/config unicode rule message fix filter/);
 
@@ -479,31 +479,437 @@ FormValidator::LazyWay - Yet Another Form Validator
 
 =head1 SYNOPSIS
 
-  my $fv = FormValidator::LazyWay->new( $config );
-  my $cgi = new CGI;
-  my $res
-    = $fv->check( $cgi , {
-        required => [qw/email password/], });
-
-  if ( $res->has_error ) {
+    use strict;
+    use warnings;
+    use Data::Dumper;
+    use CGI;
+    use FormValidator::LazyWay;
+    
+    my $config = {
+        'setting' => {
+            'strict' => {
+                'email'    => { 'rule' => [ 'Email#email' ] },
+                'password' => {
+                    'rule' => [
+                        {   'String#length' => {
+                                'min' => '4',
+                                'max' => '12'
+                            }
+                        },
+                        'String#ascii'
+                    ]
+                }
+            }
+        },
+        'lang'   => 'en',
+        'labels' => {
+            'en' => {
+                'email'    => 'mail address',
+                'password' => 'password'
+            }
+        },
+        'rules' => [ 'Email', 'String' ]
+    };
+    
+    my $fv  = FormValidator::LazyWay->new(config => $config);
+    my $cgi = new CGI( { password => 'e' } );
+    my $res = $fv->check( $cgi, { required => [qw/email password/], } );
+    
+    if ( $res->has_error ) {
         print Dumper $res->error_message;
-  }
-  else {
+        # output  
+        #$VAR1 = {
+        #  'email' => 'mail address format is missing.',
+        #  'password' => 'password minimun 4 letters and maximum 12 letters',
+        #};
+    }
+    else {
+    
         # OK!
         print Dumper $res->valid;
-  }
-
+    }
+    
 =head1 DESCRIPTION
 
 THIS MODULE IS UNDER DEVELOPMENT. SPECIFICATION MAY CHANGE.
 
-This validator's scope is not a form but an application. why?? I do not like a validator much which scope is a form because
-I have to write rule per form. that make me tired some.
+This validator's scope is not a form but an application. why?? 
+I do not like a validator much which scope is a form because I have to write rule per form.  that make me tired some. 
 
-There is one more cool aim for this validator. this validator does error message staff very well. This validator come with rule message :-)
+this module lets you write rule per field and once you set those rule what you need to warry is only required or optional for basic use.
+One note. Since you set rule per filed , your can not name like 'message' which may have 30 charcter max or 50 charcter max depend where you store.
+I mean you should name like 'inquery_message'(30 character max) , 'profile_message'(50 character max) if both rule is different.
 
-well I am not good at explain all about details in English , so I will write some code to explain one by one.
+There is one more cool aim for this validator. this validator does error message staff automatically. 
 
+well I am not good at explain all about detail in English , so I will write some code to explain one by one.
+
+=head1 QUICK START
+
+Let's start to build a simple inquery form .
+
+=head2 CONFIG SETTING 
+
+For this sample , I am using YAML. but you can use your own way.
+Ok, I am using two rule modules in this case.
+detail is here L<FormValidator::LazyWay::Rule::Email> L<FormValidator::LazyWay::Rule::String> 
+
+    rules :
+        - Email
+        - String
+    lang : en
+    setting :
+        strict :
+            email :
+                rule :
+                    - Email#email
+            message :
+                rule :
+                    - String#length :
+                        min : 1
+                        max : 500
+            user_key :
+                rule :
+                    - String#length :
+                        min : 4
+                        max : 12
+                    - String#ascii 
+    labels :
+        ja :
+            email    : email address
+            message  : inquery message
+            user_key : user ID
+
+=head2 PREPARE 
+
+For first step , you need to create FormValidator::LazyWay object. 
+What all you need is , just pass config data.
+
+    use FormValidator::LazyWay;
+    use YAML::Syck;
+    use FindBin;
+    use File::Spec;
+
+    my $conf_file = File::Spec->catfile( $FindBin::Bin, 'conf/inquery-sample.yml' );
+    my $config = LoadFile($conf_file);
+    my $fv = FormValidator::LazyWay->new( config => $config );
+
+=head2 HOW TO CHECK 
+
+CASE : you want email and message for sure. and user_key is optional.
+
+    my $cgi = new CGI() ; # contain posted data
+
+    my $res = $fv->check( $cgi , {
+        required => [qw/email message/],
+        optional => [qw/user_key/],
+    });
+
+    # when error
+    if( $res->has_error ) {
+        warn Dumper $res->error_message;
+    }
+    # OK!
+    else {
+        warn Dumper $res->valid;
+    }
+
+=head2 RESULT
+
+=over
+
+=item SUCCESS
+ 
+    my $cgi = new CGI( { email => 'tomohiro.teranishi@gmail.com' , use_key => 'tomyhero' , message => 'this data work' } ) ;
+
+$res->valid Dumper result
+
+    $VAR1 = {
+        'email' => 'tomohiro.teranishi@gmail.com',
+        'message' => 'this data work'
+    };
+
+
+=item MISSING
+ 
+    my $cgi = new CGI( { message => 'does not work' } ) ;
+
+$res->error_message Dumper Result
+
+    $VAR1 = {
+        'email' => 'email address is missing.'
+    };
+
+=item INVALID
+
+    my $cgi = new CGI( { email => 'email' , use_key => 'tom' , message => 'does not work!'  } ) ;
+
+$res->error_message Dumper result
+
+    $VAR1 = {
+        'email' => 'email address supports email address format'
+    };
+
+=back
+
+=head1 CONFIG
+
+=head2 rules
+
+You msut set which rule module you want to use. 
+
+If you want to use L<FormValidator::LazyWay::Rule::String> then type 'String'.
+and I you want to use your own rule module then, start with + SEE Blow e.g.
+
+ rules :
+    - String
+    - +OreOre::Rule
+
+=head2 lang
+
+you need to set which lang you want to use for default. default value is en.
+
+ lang : ja
+
+=head2 langs
+
+If you want to use several languages then listed them or you do not need to worry.
+
+ langs : 
+    - ja
+    - en
+
+=head2 setting
+
+setting format specific.
+
+ setting :
+    'level' :
+    'field name' :
+        'type' :
+            'type data'
+
+=over 
+
+=item level 
+
+
+When you want to use have couple rules for a field, you can use 'level' setting.
+defalult level is 'strict';
+
+e.g. 
+
+your register form use 'strict' level , and use 'loose' for your fazzy search form .
+
+ setting :
+    strict : 
+        email :
+            rule :
+                - Email#email
+    loose :
+        email :
+            rule :
+                - Email#much_alias
+ 
+
+CASE register form does not need to set level because 'strict' is default level.
+
+    my $res = $fv->check( $cgi , { required => [qw/email/] } );
+
+CASE fazzy search form , you should set 'loose' for level.
+
+    my $res = $fv->check( $cgi , { required => [qw/email/] , level => { email => 'loose' }   } );
+
+And also level has two special levels.
+
+one is 'regex_map' . 
+when you use this level , you can use reguler exp for field name.
+
+ setting :
+    regexp_map :
+        '_id$' :
+            rule :
+                - Number#int
+    strict :
+        foo_id :
+            rule :
+                - Email#email
+        
+
+If you set like this , then all ***_id fiels use Number#int rule. and regexp_map priolity is low so if you set foo_id for 'strict' level,
+then the rule is used for foo_id(not _id$ rule)
+
+the other special level is 'merge'
+
+Using this module , you can merge several fields and treat like a field.
+
+  merge:
+    date:
+      format: "%04d-%02d-%02d"
+      fields:
+        - year
+        - month
+        - day
+  strict:
+    date:
+      rule:
+        - DateTime#date
+
+=item field name
+
+you can set field name.
+
+=item type
+
+rule, filter and fix is supported.
+
+=over
+
+=item rule 
+
+mapping between field name and rule module. 
+
+ rule :
+    - String#length :
+        min : 4
+        max : 12
+    - String#ascii
+    - +OreOre#rule
+
+=item filter
+
+mapping between field name and filter module.
+
+filter run before rule check and modify parameter what you want.
+e.g.  decoding name value before rule run.
+
+  name :
+    rule :
+      - String#length:
+          min : 4
+          max : 12
+    filter :
+      - Encode#decode:
+          encoding: utf8
+
+=item fix
+
+mapping between field name and fix module.
+fix module lets you fix value after rule check.
+
+e.g. fix String Date Format to DateTime Object.
+
+  date:
+    rule:
+      - DateTime#date
+    fix:
+      - DateTime#format:
+          - '%Y-%m-%d'
+
+=back
+
+=back 
+
+=head2 labels
+
+setting field name labels.
+
+ labels :
+    en :
+        email     : Email Address 
+        user_name : User Name
+        user_id   : User ID
+
+this labels are used for error message.
+
+=head2 messages
+
+Only if you want to overwrite message, then use this setting.
+
+    messages :
+        ja :
+            rule_message : __field__ supports __rule__, dude.
+            rule :
+                Email#email  : EMAIL
+                String#length : $_[min] over, $_[max] upper
+
+
+=head1 PROFILE 
+
+call 'profile' for second args for check method.
+
+=head2 required
+
+set required field name. if not found thease field, then missing error occur.
+
+ my $profile 
+    = {
+        required => [qw/email name/],
+    }
+
+=head2 optional
+
+set optional field name. this filed can be missing.
+
+ my $profile 
+    = {
+        optional => [qw/zip/],
+    }
+
+=head2 defaults
+
+you can specify default value. this default value is set ifn value is empty before required check run.
+
+ my $profile 
+    = {
+        required => [qw/email name/],
+        defaults => {
+            email => 'tomohiro.teranishi@gmail.com',
+            name => 'Tomohiro',
+        },
+    }
+
+
+=head2 want_array
+
+if you want to have plulal values for a field, then you must set the field name for want_array. 
+if you use this then $valid->{hobby} has array ref (even one value)
+
+ my $profile 
+    = {
+        required => [qw/email name/],
+        optional => [qw/hobby/],
+        want_array => [qw/hobby/],
+    }
+
+=head2 lang
+
+you can change lang which can be listed at langs setting at config data.
+
+ my $profile 
+    = {
+        required => [qw/email name/],
+        lang => 'ja',
+    }
+
+=head2 level
+
+you can change level if you like.
+
+ my $profile 
+    = {
+        required => [qw/email name/],
+        level => {
+            email => 'loose',
+            name  => 'special',
+        }
+    }
+
+=head1 RESULT
+
+  my $res = $fv->check( $cgi , $profile ) ;
+ 
+$res is L<FormValidator::LazyWay::Result> object. SEE L<FormValidator::LazyWay::Result> POD for detail.
 
 =head1 AUTHOR
 

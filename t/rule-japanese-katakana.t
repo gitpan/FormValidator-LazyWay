@@ -38,6 +38,14 @@ allow:
   - '　'
 --- result chomp
 1
+=== space ok
+--- value chomp
+アイ ウエオ
+--- args yaml
+allow:
+  - ' '
+--- result chomp
+1
 === KATAKANA-HIRAGANA PROLONGED SOUND MARK ok
 --- value chomp
 ウッウー

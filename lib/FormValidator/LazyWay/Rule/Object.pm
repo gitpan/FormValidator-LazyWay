@@ -38,7 +38,7 @@ FormValidator::LazyWay::Rule::Object - object
 
 regular expression
 
- Object#regep
+ Object#regexp
     format : ^\d+$
 
 =head2 true

@@ -1,5 +1,8 @@
 Revision history for FormValidator-LazyWay
 
+0.08    2009-11-17T16:41:52+09:00
+        - fixed FV::LazyWay::Result->error_message was uninitialized by hash.
+
 0.07    2009-09-12T17:13:56+09:00
         - added lang files.
         - fixed filter action for regex_map (thanks Kazuma Shiraiwa)

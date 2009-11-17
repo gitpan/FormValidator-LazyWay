@@ -15,7 +15,7 @@ sub hiragana {
         foreach my $allow ( @{$args->{allow}} ) {
             $allow = Encode::decode('utf8', $allow)
                 if $args->{bytes};
-            $text =~ s{$allow}{}xmsg;
+            $text =~ s{$allow}{}g;
         }
     }
 
@@ -43,7 +43,7 @@ sub katakana {
         foreach my $allow ( @{$args->{allow}} ) {
             $allow = Encode::decode('utf8', $allow)
                 if $args->{bytes};
-            $text =~ s{$allow}{}xmsg;
+            $text =~ s{$allow}{}g;
         }
     }
 

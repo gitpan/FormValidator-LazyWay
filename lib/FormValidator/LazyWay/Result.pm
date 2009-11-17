@@ -29,7 +29,7 @@ sub custom_invalid {
         $self->has_custom_invalid(1);
         $self->success(0);
         $self->{custom_invalid}->{$key} = $message;
-        $self->error_message->{$key}    = $message;
+        $self->{error_message}->{$key}    = $message;
     }
 
     return $self->{custom_invalid};
