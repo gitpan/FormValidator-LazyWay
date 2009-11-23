@@ -17,6 +17,7 @@ requires 'URI'                        => 0;
 build_requires 'Test::Base'         => 0;
 build_requires 'Test::Base::Filter' => 0;
 build_requires 'Test::Exception'    => 0;
+build_requires 'YAML'               => 0;
 build_requires 'YAML::Syck'         => 0;
 
 all_from 'lib/FormValidator/LazyWay.pm';

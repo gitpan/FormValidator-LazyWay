@@ -1,5 +1,8 @@
 Revision history for FormValidator-LazyWay
 
+0.09    2009-11-23T14:46:08+09:00
+        - add build_requires YAML.
+
 0.08    2009-11-17T16:41:52+09:00
         - fixed FV::LazyWay::Result->error_message was uninitialized by hash.
 
