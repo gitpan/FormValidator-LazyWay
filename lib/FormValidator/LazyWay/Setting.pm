@@ -112,7 +112,8 @@ sub _make_setting {
             my $label;
             my $args = {};
             if ( ref $validation eq 'HASH' ) {
-                ( $label, $args ) = each %{$validation};
+                ($label) = keys %{$validation};
+                $args = $validation->{$label};
             }
             else {
                 $label = $validation;

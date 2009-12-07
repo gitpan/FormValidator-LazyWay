@@ -33,4 +33,4 @@ requires:
   Perl6::Junction: 0
   UNIVERSAL::require: 0
   URI: 0
-version: 0.09
+version: 0.10
