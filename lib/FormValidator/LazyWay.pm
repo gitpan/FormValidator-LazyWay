@@ -14,7 +14,7 @@ use Carp;
 use Data::Dumper;
 use Data::Visitor::Encode;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 __PACKAGE__->mk_accessors(qw/config unicode rule message fix filter/);
 
@@ -191,7 +191,7 @@ sub _merge {
 
     return unless $self->config->{setting}->{merge};
 
-    for my $key ( keys %{$self->config->{setting}->{merge}} ) {
+    for my $key ( keys %{$profile->{required}}, keys %{$profile->{optional}} ) {
         my $field = $self->config->{setting}->{merge}->{$key};
         if ( ref $field eq 'HASH'
                  && $field->{format}

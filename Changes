@@ -1,5 +1,8 @@
 Revision history for FormValidator-LazyWay
 
+0.11    2009-12-16T21:46:51+09:00
+        - fixed uninitializationed value on marge setting (thanks Kazuma Shiraiwa)
+
 0.10    2009-12-07T14:55:52+09:00
         - use keys instead of each
 
