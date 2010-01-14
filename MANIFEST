@@ -73,7 +73,9 @@ t/lazyway-check-set-unknown.t
 t/lazyway-check-validation-block-append_error_message.t
 t/lazyway-check-validation-block-get-validator-method.t
 t/lazyway-new.t
+t/lazyway-result-class-overwrite.t
 t/lazyway-result-custom-invalid.t
+t/lib/MyResult.pm
 t/lib/MyRule/Oppai.pm
 t/lib/MyRule/Oppai/JA.pm
 t/lib/MyTestBase.pm

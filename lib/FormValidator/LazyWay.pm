@@ -10,13 +10,14 @@ use FormValidator::LazyWay::Fix;
 use FormValidator::LazyWay::Filter;
 use FormValidator::LazyWay::Utils;
 use FormValidator::LazyWay::Result;
+use UNIVERSAL::require;
 use Carp;
 use Data::Dumper;
 use Data::Visitor::Encode;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
-__PACKAGE__->mk_accessors(qw/config unicode rule message fix filter/);
+__PACKAGE__->mk_accessors(qw/config unicode rule message fix filter result_class/);
 
 sub new {
     my $class = shift;
@@ -33,6 +34,15 @@ sub new {
     croak 'you must set config' unless $args->{config};
 
     my $self = bless $args, $class;
+
+
+    if( $args->{result_class} ) {
+        $args->{result_class}->require or die $@;
+        $self->{result_class} = $args->{result_class};
+    }
+    else {
+        $self->{result_class} = 'FormValidator::LazyWay::Result';
+    }
 
     if ( $self->unicode || $self->{config}->{unicode} ) {
         my $dev = Data::Visitor::Encode->new();
@@ -122,7 +132,7 @@ sub check {
     $storage->{has_error}   = ( $storage->{has_missing} || $storage->{has_invalid} ) ? 1 : 0 ;
     $storage->{success}     = ( $storage->{has_missing} || $storage->{has_invalid} ) ? 0 : 1 ;
 
-    return FormValidator::LazyWay::Result->new($storage);
+    return $self->result_class->new( $storage );
 }
 
 sub _set_error_message_for_display {
@@ -536,9 +546,9 @@ THIS MODULE IS UNDER DEVELOPMENT. SPECIFICATION MAY CHANGE.
 This validator's scope is not a form but an application. why?? 
 I do not like a validator much which scope is a form because I have to write rule per form.  that make me tired some. 
 
-this module lets you write rule per field and once you set those rule what you need to warry is only required or optional for basic use.
-One note. Since you set rule per filed , your can not name like 'message' which may have 30 charcter max or 50 charcter max depend where you store.
-I mean you should name like 'inquery_message'(30 character max) , 'profile_message'(50 character max) if both rule is different.
+this module lets you write rule per field and once you set those rule what you need to worry is only required or optional for basic use.
+One note. Since you set rule per filed , your can not name like 'message' which may have 30 character max or 50 character max depend where you store.
+I mean you should name like 'inquiry_message'(30 character max) , 'profile_message'(50 character max) if both rule is different.
 
 There is one more cool aim for this validator. this validator does error message staff automatically. 
 
@@ -546,12 +556,12 @@ well I am not good at explain all about detail in English , so I will write some
 
 =head1 QUICK START
 
-Let's start to build a simple inquery form .
+Let's start to build a simple inquiry form .
 
 =head2 CONFIG SETTING 
 
 For this sample , I am using YAML. but you can use your own way.
-Ok, I am using two rule modules in this case.
+OK, I am using two rule modules in this case.
 detail is here L<FormValidator::LazyWay::Rule::Email> L<FormValidator::LazyWay::Rule::String> 
 
     rules :
@@ -577,7 +587,7 @@ detail is here L<FormValidator::LazyWay::Rule::Email> L<FormValidator::LazyWay::
     labels :
         ja :
             email    : email address
-            message  : inquery message
+            message  : inquiry message
             user_key : user ID
 
 =head2 PREPARE 
@@ -590,7 +600,7 @@ What all you need is , just pass config data.
     use FindBin;
     use File::Spec;
 
-    my $conf_file = File::Spec->catfile( $FindBin::Bin, 'conf/inquery-sample.yml' );
+    my $conf_file = File::Spec->catfile( $FindBin::Bin, 'conf/inquiry-sample.yml' );
     my $config = LoadFile($conf_file);
     my $fv = FormValidator::LazyWay->new( config => $config );
 
@@ -656,7 +666,7 @@ $res->error_message Dumper result
 
 =head2 rules
 
-You msut set which rule module you want to use. 
+You must set which rule module you want to use. 
 
 If you want to use L<FormValidator::LazyWay::Rule::String> then type 'String'.
 and I you want to use your own rule module then, start with + SEE Blow e.g.
@@ -695,11 +705,11 @@ setting format specific.
 
 
 When you want to use have couple rules for a field, you can use 'level' setting.
-defalult level is 'strict';
+default level is 'strict';
 
 e.g. 
 
-your register form use 'strict' level , and use 'loose' for your fazzy search form .
+your register form use 'strict' level , and use 'loose' for your fuzzy search form .
 
  setting :
     strict : 
@@ -716,14 +726,14 @@ CASE register form does not need to set level because 'strict' is default level.
 
     my $res = $fv->check( $cgi , { required => [qw/email/] } );
 
-CASE fazzy search form , you should set 'loose' for level.
+CASE fuzzy search form , you should set 'loose' for level.
 
     my $res = $fv->check( $cgi , { required => [qw/email/] , level => { email => 'loose' }   } );
 
 And also level has two special levels.
 
 one is 'regex_map' . 
-when you use this level , you can use reguler exp for field name.
+when you use this level , you can use regular exp for field name.
 
  setting :
     regexp_map :
@@ -736,7 +746,7 @@ when you use this level , you can use reguler exp for field name.
                 - Email#email
         
 
-If you set like this , then all ***_id fiels use Number#int rule. and regexp_map priolity is low so if you set foo_id for 'strict' level,
+If you set like this , then all ***_id field use Number#int rule. and regexp_map priority is low so if you set foo_id for 'strict' level,
 then the rule is used for foo_id(not _id$ rule)
 
 the other special level is 'merge'
@@ -840,7 +850,7 @@ call 'profile' for second args for check method.
 
 =head2 required
 
-set required field name. if not found thease field, then missing error occur.
+set required field name. if not found these field, then missing error occur.
 
  my $profile 
     = {
@@ -858,7 +868,7 @@ set optional field name. this filed can be missing.
 
 =head2 defaults
 
-you can specify default value. this default value is set ifn value is empty before required check run.
+you can specify default value. this default value is set if value is empty before required check run.
 
  my $profile 
     = {
@@ -872,7 +882,7 @@ you can specify default value. this default value is set ifn value is empty befo
 
 =head2 want_array
 
-if you want to have plulal values for a field, then you must set the field name for want_array. 
+if you want to have plural values for a field, then you must set the field name for want_array. 
 if you use this then $valid->{hobby} has array ref (even one value)
 
  my $profile 
@@ -910,6 +920,14 @@ you can change level if you like.
   my $res = $fv->check( $cgi , $profile ) ;
  
 $res is L<FormValidator::LazyWay::Result> object. SEE L<FormValidator::LazyWay::Result> POD for detail.
+
+=head1 HOW TO
+
+=head2 how to use L<FormValidator::LazyWay::Result> subclass.
+
+you can set your subclass name like bellow.
+
+ my $fv = FormValidator::LazyWay->new( { config => $block->config , result_class => 'YourResult' } ); 
 
 =head1 AUTHOR
 

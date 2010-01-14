@@ -1,5 +1,8 @@
 Revision history for FormValidator-LazyWay
 
+0.12    2010-01-14T17:07:50+09:00
+        - Support result_class option to replace FormValidator::LazyWay::Result to your own Result class.
+
 0.11    2009-12-16T21:46:51+09:00
         - fixed uninitializationed value on marge setting (thanks Kazuma Shiraiwa)
 
