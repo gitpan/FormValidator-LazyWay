@@ -15,7 +15,7 @@ use Carp;
 use Data::Dumper;
 use Data::Visitor::Encode;
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 __PACKAGE__->mk_accessors(qw/config unicode rule message fix filter result_class/);
 
@@ -81,6 +81,7 @@ sub check {
         missing => [],
         unknown => [],
         invalid => {},
+        fixed   => {},
     };
 
     FormValidator::LazyWay::Utils::check_profile_syntax( \%profile );
@@ -221,7 +222,7 @@ sub _filter {
 
     for my $field (@fields) {
         my $level = $profile->{level}{$field} || 'strict';
-        $storage->{valid}{$field} = $self->filter->parse($storage->{valid}{$field}, $level, $field);
+        ($storage->{valid}{$field} ) = $self->filter->parse($storage->{valid}{$field}, $level, $field);
     }
 }
 
@@ -234,7 +235,16 @@ sub _fixed {
 
     for my $field (@fields) {
         my $level = $profile->{level}{$field} || 'strict';
-        $storage->{valid}{$field} = $self->fix->parse($storage->{valid}{$field}, $level, $field);
+
+        my ( $v , $modified ) = $self->fix->parse($storage->{valid}{$field}, $level, $field);
+        if( $profile->{use_fixed_method} && $profile->{use_fixed_method}{$field} ) {
+            my $fixed_field_name = $profile->{use_fixed_method}{$field};
+            $storage->{fixed}{$fixed_field_name} = $v;
+        }
+        else {
+            $storage->{valid}{$field} = $v;
+        }
+
     }
 }
 
@@ -340,6 +350,52 @@ sub _get_validator_methods {
 }
 
 sub _set_dependencies {
+    my $self    = shift;
+    my $storage = shift;
+    my $profile = shift;
+    return 1 unless defined $profile->{dependencies};
+
+    foreach my $field ( keys %{$profile->{dependencies}} ) {
+        my $deps = $profile->{dependencies}{$field};
+        if (defined $storage->{valid}{$field} ) {
+            if (ref($deps) eq 'HASH') {
+                for my $key (keys %$deps) {
+                    # Handle case of a key with a single value given as an arrayref
+                    # There is probably a better, more general solution to this problem.
+                    my $val_to_compare;
+                    if ((ref $storage->{valid}{$field} eq 'ARRAY') and (scalar @{ $storage->{valid}{$field} } == 1)) {
+                        $val_to_compare = $storage->{valid}{$field}->[0];
+                    }
+                    else {
+                        $val_to_compare = $storage->{valid}{$field};
+                    }
+
+                    if($val_to_compare eq $key){
+                        for my $dep (FormValidator::LazyWay::Utils::arrayify($deps->{$key})){
+                            $profile->{required}{$dep} = 1;
+                        }
+                    }
+                }
+            }
+            elsif (ref $deps eq "CODE") {
+                for my $val (FormValidator::LazyWay::Utils::arrayify( $storage->{valid}{$field} )) {
+                    my $returned_deps = $deps->($self, $val);
+
+                    for my $dep (FormValidator::LazyWay::Utils::arrayify($returned_deps)) {
+                        $profile->{required}{$dep} = 1;
+                    }
+                }
+            }
+            else {
+                for my $dep (FormValidator::LazyWay::Utils::arrayify($deps)){
+                    $profile->{required}{$dep} = 1;
+                }
+            }
+        }
+    }
+}
+
+sub __set_dependencies {
     my $self    = shift;
     my $storage = shift;
     my $profile = shift;
@@ -914,6 +970,36 @@ you can change level if you like.
             name  => 'special',
         }
     }
+
+=head2 dependencies
+
+you can make a item that needs other items.
+Example of setting the following: delivery option is needed address_for_delivery and name_for_delivery.
+
+ my $profile 
+    = {
+        required => [qw/name address/],
+        dependencies => {
+           delivery => {
+               1 => [qw/address_for_delivery name_for_delivery/]
+           }
+        }
+    }
+
+=head2 use_fixed_method
+
+you can get your fixed valid data from fixed() instead of valid(). valid() hold none fixed values.
+
+ my $profile = {
+    required => [qw/date/],
+    use_fixed_method => { 
+        date => 'date_obj', 
+    },
+ };
+
+ $res->valid('date'); # raw data
+ $res->fixed('date_obj'); #fixed obj
+ 
 
 =head1 RESULT
 

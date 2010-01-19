@@ -65,6 +65,7 @@ t/fix.t
 t/fixed-class-datetime.t
 t/fixed-class-uri.t
 t/lazyway-check-conv-profile.t
+t/lazyway-check-dependencies.t
 t/lazyway-check-remove-empty-fields.t
 t/lazyway-check-required-fields.t
 t/lazyway-check-set-default.t
@@ -75,6 +76,7 @@ t/lazyway-check-validation-block-get-validator-method.t
 t/lazyway-new.t
 t/lazyway-result-class-overwrite.t
 t/lazyway-result-custom-invalid.t
+t/lazyway-result-fixed.t
 t/lib/MyResult.pm
 t/lib/MyRule/Oppai.pm
 t/lib/MyRule/Oppai/JA.pm

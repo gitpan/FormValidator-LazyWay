@@ -17,6 +17,7 @@ __PACKAGE__->mk_accessors(
         has_invalid
         has_error
         success
+        fixed
         /
 );
 

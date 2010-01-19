@@ -40,10 +40,12 @@ sub parse {
     my $value = shift;
     my $level = shift;
     my $field = shift;
+    my $modified = 0;
 
     if (exists $self->{setting}{$level}{$field}) {
         for my $item ( @{$self->{setting}{$level}{$field}} ) {
             $value = $item->{method}->( $value , $item->{args} );
+            $modified =1;
         }
     }
     else {
@@ -51,12 +53,12 @@ sub parse {
             if ( $field =~ qr/$regexp/ ) {
                 for my $validator ( @{$self->{setting}{regex_map}{$regexp}} ) {
                     $value = $validator->{method}->( $value, $validator->{args} );
+                    $modified =1;
                 }
             }
         }
     }
-
-    return $value;
+    return ( $value, $modified );
 }
 
 sub _load_setting {

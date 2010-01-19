@@ -24,6 +24,7 @@ sub check_profile_syntax {
                 level
                 dependency_groups 
                 dependencies
+                use_fixed_method
                 /
         );
 

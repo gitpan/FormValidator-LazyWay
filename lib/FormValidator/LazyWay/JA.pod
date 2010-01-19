@@ -434,6 +434,35 @@ check()メソッドの二つ目の引数に入るデータを、profile と呼�
         }
     }
 
+=head2 dependencies
+
+特定の項目に依存した項目を作りたい場合に使用します。
+以下の設定例は、配送先オプションにチェックを入れた場合に配送先住所と配送先氏名を必須にします。
+
+ my $profile 
+    = {
+        required => [qw/name address/],
+        dependencies => {
+           delivery => {
+               1 => [qw/address_for_delivery name_for_delivery/]
+           }
+        }
+    }
+
+=head2 use_fixed_method
+
+use_fixed_method を使用すると fix でオブジェクトになった項目を fixed() メソッドで受け取れるようにして、valid() メソッドでは fix される前のデータを受け取れるようになります。
+
+    my $profile = {
+       required => [qw/date/],
+       use_fixed_method => { 
+           date => 'date_obj', 
+       },
+    };
+   
+    $res->valid('date'); # raw data
+    $res->fixed('date_obj'); #fixed obj
+ 
 =head1 結果
 
 L<FormValidator::LazyWay::Result>オブジェクトを戻り値として取得することができます。そちらを参照してください。
