@@ -15,7 +15,7 @@ use Carp;
 use Data::Dumper;
 use Data::Visitor::Encode;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 __PACKAGE__->mk_accessors(qw/config unicode rule message fix filter result_class/);
 
@@ -502,7 +502,7 @@ sub _set_default {
     # get from profile
     my $defaults = $profile->{defaults} || {};
     foreach my $field ( %{ $defaults } ) {
-        $storage->{valid}{$field} ||= $defaults->{$field};
+        unless (defined $storage->{valid}{$field}) { $storage->{valid}{$field} = $defaults->{$field} }
     }
 
     # get from config file
