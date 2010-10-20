@@ -13,8 +13,9 @@ use FormValidator::LazyWay::Result;
 use UNIVERSAL::require;
 use Carp;
 use Data::Dumper;
+use Data::Visitor::Encode;
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 __PACKAGE__->mk_accessors(qw/config unicode rule message fix filter result_class/);
 
@@ -44,7 +45,6 @@ sub new {
     }
 
     if ( $self->unicode || $self->{config}->{unicode} ) {
-        Data::Visitor::Encode->require or die 'unicode option require Data::Visitor::Encode. Please Install it.';
         my $dev = Data::Visitor::Encode->new();
         $self->config( $dev->decode('utf8', $self->config) );
     }
